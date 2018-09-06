@@ -16,7 +16,7 @@ after_success:
   - docker build -t green88/multi-server ./server 
   - docker build -t green88/multi-worker ./worker  
   # login to docker hub
-  - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # push images to docker hub
   - docker push green88/multi-client
   - docker push green88/multi-nginx
