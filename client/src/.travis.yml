@@ -1,0 +1,25 @@
+
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t green88/react-test -f ./clent/Dockerfile.dev ./client
+
+script:
+  - docker run green88/react-test npm run test -- --coverage
+
+
+after_success:
+  - docker build -t green88/multi-client ./client
+  - docker build -t green88/multi-nginx ./nginx
+  - docker build -t green88/multi-server ./server 
+  - docker build -t green88/multi-worker ./worker  
+  # login to docker hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
+  # push images to docker hub
+  - docker push green88/multi-client
+  - docker push green88/multi-nginx
+  - docker push green88/multi-server
+  - docker push green88/multi-worker
+
